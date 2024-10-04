@@ -3,6 +3,8 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
+import "./db.js";
+
 const app = express();
 app.name = "API";
 
