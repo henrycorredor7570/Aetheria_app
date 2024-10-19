@@ -1,5 +1,5 @@
-export default (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+const User = (sequelize, DataTypes) => {
+    return sequelize.define('User', {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -21,6 +21,6 @@ export default (sequelize, DataTypes) => {
         timestamps: true,
         underscored: true // Usa snake_case en lugar de camelCase
     });
-
-    return User;
 };
+
+export default User;

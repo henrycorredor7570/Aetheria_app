@@ -1,5 +1,6 @@
-export default (sequelize, DataTypes) => {
-    const Review = sequelize.define('Review',{
+/*Este modelo Review te permite manejar eficientemente las reseñas de los usuarios en tu plataforma, manteniendo las relaciones con los modelos User y Destination.*/
+const Review = (sequelize, DataTypes) => {
+    return sequelize.define('Review',{
         rating: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -28,6 +29,6 @@ export default (sequelize, DataTypes) => {
             }
         ]
     });
+};
 
-    return Review;
-}
+export default Review;

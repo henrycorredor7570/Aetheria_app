@@ -2,11 +2,12 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import routes from './routes/index.js';
 
 import "./db.js";
 
 const app = express();
-app.name = "API";
+// app.name = "API";
 
 app.use(bodyParser.urlencoded({
     limit: "50mb",
@@ -34,7 +35,7 @@ app.options("", (req, res) => {
 
 app.use("/", routes);
 
-server.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
     const status = err.status || 500;
     const message = err.message || err;
     console.error(err);

@@ -7,4 +7,4 @@ conn.sync({ alter: true }).then(() => {
     app(PORT, () => {
         console.log(`server connected to port: ${PORT}`);
     })
-})
+});
