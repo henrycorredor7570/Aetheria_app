@@ -1,11 +1,8 @@
-import User from "../db"
+// import User from "../db"
 
-const getAllUsers = async (req,res) => {
+export const getAllUsers = async (req,res) => {
     // const { name } = req.query;
-    const users = await User.findAll();
+    // const users = await User.findAll();
+    let users = [];
     return users  
-}
-
-export default {
-    getAllUsers,
 }

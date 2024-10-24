@@ -5,7 +5,7 @@ const User = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
-        email:{
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
@@ -17,7 +17,7 @@ const User = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         }
-    },{
+    }, {
         timestamps: true,
         underscored: true // Usa snake_case en lugar de camelCase
     });
