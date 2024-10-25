@@ -1,8 +1,7 @@
 import { Sequelize } from "sequelize";
 import { readdirSync } from "fs";
-import { basename as _basename, join } from "path";
+import { basename as _basename, join, dirname } from "path";
 import { fileURLToPath, pathToFileURL } from "url";
-import { dirname } from "path";
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -80,6 +79,8 @@ const loadModels = async () => {
 
 // Ejecutar la carga de modelos
 await loadModels();
+
+export const { User, Review, Visit, Destination, PointOfInterest, ARModel } = sequelize.models;
 
 export const conn = sequelize;
 

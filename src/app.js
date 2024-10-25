@@ -7,14 +7,12 @@ import routes from './routes/index.js';
 import "./db.js";
 
 const app = express();
-// app.name = "API";
 
 app.use(bodyParser.urlencoded({
     limit: "50mb",
     extended: true,
     parameterLimit: 1000000
 }));
-
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
