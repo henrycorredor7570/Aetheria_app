@@ -3,7 +3,7 @@ import { User } from "../db.js";
 export const getAllUsers = async (req,res) => {
     const { name } = req.query;
     try { 
-        const users = await User.findAll();
+        const users = await User.findAll(); 
         if(name){
             const userFiltered = users.filter((user) => user.username && user.username.includes(name));
             if(userFiltered.length < 1) throw Error(`No existe el usuario con nombre: ${name}`);
@@ -18,13 +18,28 @@ export const getAllUsers = async (req,res) => {
 }
 
 export const getUserById = async (req,res) => {
-    const response = "obtener usuario por id" 
-    res.status(200).json(response)
+    const { id } = req.params;
+    try {
+        const userId = await User.findByPk(id);    
+        if(!userId) res.status(400).json({error: "Usuario no encontrado"});
+        res.status(200).json(userId);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
 }
 
 export const createUser = async (req, res) => {
-    const response = "crear usuario" 
-    res.status(200).json(response)
+    const { name, email, password } = req.body;
+    try {
+        const response = await User.create({
+            username:name,
+            email:email,
+            password_hash: password
+        })
+        res.status(201).json(response)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
 }
 
 export const updateUser = async (req,res) => {
