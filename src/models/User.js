@@ -18,7 +18,7 @@ const User = (sequelize, DataTypes) => {
             allowNull: false
         }
     }, {
-        timestamps: true,
+        timestamps: false,
         underscored: true // Usa snake_case en lugar de camelCase
     });
 };

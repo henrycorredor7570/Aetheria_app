@@ -36,9 +36,9 @@ export const createUser = async (req, res) => {
             email:email,
             password_hash: password
         })
-        res.status(201).json(response)
+        res.status(201).json({response})
     } catch (error) {
-        res.status(500).json({error:error.message})
+        res.status(400).json({error:error.message})
     }
 }
 
