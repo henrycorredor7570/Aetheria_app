@@ -36,18 +36,38 @@ export const createUser = async (req, res) => {
             email:email,
             password_hash: password
         })
-        res.status(201).json({response})
+        res.status(201).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
     }
 }
 
 export const updateUser = async (req,res) => {
-    const response = "actualizar usuario" 
-    res.status(200).json(response)
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    try {
+        const user = await User.findByPk(id)
+        if(!user) return res.status(404).json({error: "Usuario no encontrado"})
+        
+        user.username = name || user.username;
+        user.email = email || user.email;
+        user.password_hash = password || user.password_hash;
+
+        await user.save();
+        res.status(200).json({message:`Usuario con el id: ${id} actualizado correctamente.`});
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
 }
 
 export const deleteUser = async (req,res) => {
-    const response = "eliminar usuario" 
-    res.status(200).json(response)
+    const {id} = req.params;
+    try {
+        const user = await User.findByPk(id)
+        if(!user) return res.status(404).json({error:`Usuario no encontrado en la base de datos`})
+        await user.destroy();
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
 }
