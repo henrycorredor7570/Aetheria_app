@@ -33,7 +33,7 @@ const Destination = (sequelize, DataTypes) => {
             allowNull: false
         },
         image_url: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
             validate: {
                 isUrl: true
