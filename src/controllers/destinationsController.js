@@ -69,3 +69,16 @@ export const updateDestination = async (req,res) => {
         res.status(500).json({error: error.message})
     }
 }
+
+export const deleteDestination = async (req,res) => {
+    const { id } = req.params;
+    try {
+        if(isNaN(id)) return res.status(400).json({error:"El ID debe ser un número."});
+        const destination = await Destination.findByPk(id);
+        if (!destination) return res.status(404).json({error:"Destino no encontrado"});
+        await destination.destroy();
+        res.status(200).json("Destino eliminado con éxito");
+    } catch (error) {
+        res.status(500).json({error: error.message})
+    }
+}
