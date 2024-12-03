@@ -8,4 +8,4 @@ Base de datos: PostgreSQL para almacenar información de los destinos y perfiles
 Características:
 Integración de AR para que los usuarios usen sus cámaras y exploren destinos virtualmente.
 Mapas interactivos con puntos de interés.
-Comentarios y reseñas de usuarios que hayan visitado físicamente el lugar.  
+Comentarios y reseñas de usuarios que hayan visitado físicamente el lugar.   
