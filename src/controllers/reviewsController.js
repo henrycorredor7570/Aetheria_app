@@ -55,7 +55,7 @@ export const createReview = async(req,res) => {
 
 export const updateReview = async (req,res) => {
     const { id } = req.params;
-    const { rating, comment } = req.body;
+    const { rating, comment } = req.body;  
     try {
         if(isNaN(id)) return res.status(400).json({error: "El ID debe ser un número."});
         const review = await Review.findByPk(id);
