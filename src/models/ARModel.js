@@ -6,7 +6,7 @@ diferentes tipos de contenido o requisitos técnicos.
 Las asociaciones con Destination y PointOfInterest permiten una gran flexibilidad en cómo se pueden presentar los modelos AR a los u
 suarios, ya sea vinculados a un destino general o a un punto de interés específico.
 El índice en el campo type facilita la búsqueda rápida de modelos AR por categoría, lo que puede ser útil para filtrar o categorizar 
-el contenido AR en la interfaz de usuario.
+el contenido AR en la interfaz de usuario. 
 
 Este modelo te permite crear experiencias de AR ricas y variadas, como modelos 3D de monumentos, animaciones interactivas de 
 eventos históricos, o superposiciones de información sobre puntos de interés.*/

@@ -2,7 +2,7 @@
 const Review = (sequelize, DataTypes) => {
     return sequelize.define('Review',{
         rating: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER, 
             allowNull: false,
             validate:{
                 min: 1,
