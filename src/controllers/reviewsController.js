@@ -1,4 +1,5 @@
 import { Destination, Review, User } from "../db.js";
+
 export const getAllReviews = async (req,res) => {
     try {
         const reviews = await Review.findAll({
