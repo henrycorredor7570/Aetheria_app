@@ -68,3 +68,16 @@ export const updateReview = async (req,res) => {
         res.status(500).json({error:error.message});
     }
 }
+
+export const deleteReview = async (req,res) => {
+    const { id } = req.params;
+    try {
+        if (isNaN(id)) return res.status(400).json({error:"El ID debe ser un número."});
+        const review = await Review.findByPk(id);
+        if(!review) return res.status(400).json({error:"Reseña no encontrada."})
+        await review.destroy();
+        res.status(200).json({message:"Reseña eliminada correctamente"})
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+}
