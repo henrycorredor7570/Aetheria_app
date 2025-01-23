@@ -94,3 +94,15 @@ export const updatedPoint = async(req,res) => {
  * @desc Eliminar un punto de interés
  * @route DELETE /pointsofinterest/:id
  */
+export const deletedPointOfInterest = async(req,res) => {
+    try {
+        const {id} = req.params;
+        if(isNaN(id)) return res.status(400).json({error:"El ID debe ser un número."});
+        const point = await PointOfInterest.findByPk(id);
+        if(!point) res.status(404).json({error:"Punto de interés no encontrado."})
+        await point.destroy();
+        res.status(200).json("Punto de interés eliminado correctamente.")
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+}
