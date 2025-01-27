@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAR, getAllAR, getARById } from "../controllers/rAControllers.js";
+import { createAR, getAllAR, getARById, updateARModel, deteteARModel} from "../controllers/ARControllers.js";
 
 const ARRouter = Router();
 
@@ -23,5 +23,19 @@ ARRouter.get("/:id", getARById);
  * @access Público
  */
 ARRouter.post("/", createAR);
+
+/**
+ * @route PUT /augmentedreality
+ * @desc Actualizar un modelo con realidad aumentada
+ * @access Público
+ */
+ARRouter.put("/:id", updateARModel);
+
+/**
+ * @route DELETE /augmentedreality
+ * @description Eliminar un registro de realidad aumentada
+ * @access Público
+ */
+ARRouter.delete("/:id", deteteARModel);
 
 export default ARRouter;

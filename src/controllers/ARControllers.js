@@ -65,3 +65,44 @@ export const createAR = async(req,res) => {
         res.status(500).json({error:error.message});
     }
 }
+
+/**
+ * @description Actualizar un modelo AR
+ * @route PUT /augmentedreality/:id
+ */
+
+export const updateARModel = async(req,res) => {
+    try {
+        const {id} = req.params;
+        if(isNaN(id)) return res.status(400).json({error:"El ID debe ser un número."});
+        const { modelURL, type, metadata, destinationID, pointID } = req.body;
+        const arModel = await ARModel.findByPk(id);
+        await arModel.update({
+            model_url:modelURL || arModel.model_url,
+            type:type || arModel.type,
+            metadata:metadata || arModel.metadata,
+            destination_id:destinationID || arModel.destination_id,
+            point_of_interest_id:pointID || arModel.point_of_interest_id
+        });
+        res.status(200).json(arModel);
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+}
+
+/**
+ * @route DELETE /augmentedreality/:id
+ * @description Ruta para eliminar un registro de AR
+ */
+export const deteteARModel = async(req,res) => {
+    try {
+        const {id} = req.params;
+        if(isNaN(id)) return res.status(400).json({error: "El ID debe ser un número."});
+        const deletedAR = await ARModel.findByPk(id);
+        if(!deletedAR) return res.status(404).json({error:"El registro no fue encontrado en la base de datos."})
+        await deletedAR.destroy();
+        res.status(200).json({message:"El registro ha sido eliminado correctamente."})
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+}
