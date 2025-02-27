@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createPointOfInterest, getAllPoints, getPointById, updatedPoint, deletedPointOfInterest } 
+import { createPointOfInterest, getAllPoints, getPointById, updatedPoint, deletedPointOfInterest, getPointsByDestination } 
         from "../controllers/pointsOfInterestController.js";
 
 const pointsOfInterestRouter = Router();
@@ -39,5 +39,11 @@ pointsOfInterestRouter.put("/:id", updatedPoint);
  * @access Público
  */
 pointsOfInterestRouter.delete("/:id", deletedPointOfInterest);
+
+/**
+ * @desc Obtener todos los puntos de inte´res de un destino específico
+ * @route GET /pointsofinterest/destination/:destinationId
+ */
+pointsOfInterestRouter.get("/destination/:id", getPointsByDestination);
 
 export default pointsOfInterestRouter;

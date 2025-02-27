@@ -3,7 +3,6 @@ import { Destination } from "../db.js";
 export const getDestinations = async (req, res) => {
     try {
         const destinations = await Destination.findAll();
-        console.log(destinations);
         res.status(200).json(destinations);
         
     } catch (error) {

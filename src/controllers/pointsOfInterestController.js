@@ -106,3 +106,25 @@ export const deletedPointOfInterest = async(req,res) => {
         res.status(500).json({error:error.message});
     }
 }
+
+/**
+ * @desc Obtener todos los puntos de interés de un destino específico
+ * @route GET /pointsofinterest/destination/:id
+ */
+export const getPointsByDestination = async(req,res) => {
+    try {
+        const { id } = req.params;
+        if(isNaN(id)) return res.status(400).json({error:"El ID debe ser un número."});
+        
+        const points = await PointOfInterest.findAll({
+            where:{ destination_id: id},
+            include:[
+                {model:Destination, as:"destination", attributes:["name"]}
+            ]
+        });
+        if (!points.length) return res.status(404).json({message: "No hay puntos de interés para este destino."});
+        res.status(200).json(points);
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+}
