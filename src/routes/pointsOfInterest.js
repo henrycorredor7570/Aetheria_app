@@ -41,8 +41,8 @@ pointsOfInterestRouter.put("/:id", updatedPoint);
 pointsOfInterestRouter.delete("/:id", deletedPointOfInterest);
 
 /**
- * @desc Obtener todos los puntos de inte´res de un destino específico
- * @route GET /pointsofinterest/destination/:destinationId
+ * @desc Obtener todos los puntos de interes de un destino específico
+ * @route GET /pointsofinterest/destination/:id
  */
 pointsOfInterestRouter.get("/destination/:id", getPointsByDestination);
 
