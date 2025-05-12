@@ -48,4 +48,4 @@ const PointOfInterest = (sequelize, DataTypes) => {
     });
 };
 
-export default PointOfInterest;
+export default PointOfInterest; 
