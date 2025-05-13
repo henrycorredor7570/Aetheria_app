@@ -1,4 +1,6 @@
 import { User } from "../db.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const getAllUsers = async (req,res) => {
     const { name } = req.query;
@@ -31,14 +33,24 @@ export const getUserById = async (req,res) => {
 export const createUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-        const response = await User.create({
+        //verificamos si el usuario existe:
+        const existingUser = await User.findone({where:{email}});
+        if(existingUser){
+            return res.status(400).json({error:"el usuario ya se encuentra registrado."});
+        }
+
+        //hasheamos la contraseña:
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        //creamos el usuario en la db:
+        const newUser = await User.create({
             username:name,
-            email:email,
-            password_hash: password
+            email,
+            password_hash: hashedPassword, //guardamos al contraseña ya hasheada
         })
-        res.status(201).json(response)
+        res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {
-        res.status(400).json({error:error.message})
+        res.status(500).json({error:error.message})
     }
 }
 
