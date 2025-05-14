@@ -2,7 +2,7 @@ import { User } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.JWT_SECRET || "aetheria_secret_key"; //clave secreta para firmar los tokens
+const SECRET_KEY = process.env.JWT_SECRET; //clave secreta para firmar los tokens
 
 export const getAllUsers = async (req,res) => {
     const { name } = req.query;
