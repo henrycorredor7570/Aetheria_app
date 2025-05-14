@@ -2,6 +2,8 @@ import { User } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const SECRET_KEY = process.env.JWT_SECRET || "aetheria_secret_key"; //clave secreta para firmar los tokens
+
 export const getAllUsers = async (req,res) => {
     const { name } = req.query;
     try { 
@@ -34,7 +36,7 @@ export const createUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
         //verificamos si el usuario existe:
-        const existingUser = await User.findone({where:{email}});
+        const existingUser = await User.findOne({where:{email}});
         if(existingUser){
             return res.status(400).json({error:"el usuario ya se encuentra registrado."});
         }
@@ -50,7 +52,8 @@ export const createUser = async (req, res) => {
         })
         res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {
-        res.status(500).json({error:error.message})
+        console.log(error)
+        res.status(500).json({error:error.message});
     }
 }
 
@@ -83,3 +86,33 @@ export const deleteUser = async (req,res) => {
         res.status(500).json({error:error.message});
     }
 }
+
+export const loginUser = async (req,res) => {
+    const { email, password } = req.body; 
+
+    try {
+        //verificamos inicialmente si el usuario existe en la base de datos:
+        const user = await User.findOne({ where: {email} });
+        if(!user) {
+            return res.status(404).json({message:"Usuario no encontrado."});
+        }
+
+        //comparamos la contraseña proporcionada con el hash almacenado:
+        const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+        if(!isPasswordValid) {
+            return res.status(401).json({error:"Credenciales incorrectas."});
+        }
+
+        //Generamos un token JWT:
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            SECRET_KEY,
+            { expiresIn: "1h"} // configuramos la expiracion del token 
+        )
+
+        //respondemos con el token y los datos del usuario:
+        res.status(200).json({message:"Inicio de sesión exitoso.", token, user });
+    } catch(error) {
+        return res.status(500).json({error: error.message});
+    }
+};
