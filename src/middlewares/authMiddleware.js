@@ -19,7 +19,6 @@ export const authMiddleware = (req,res,next) => {
 
         //adjuntamos los datos del usuario al objeto req para usarlos en las rutas protegidas
         req.user = decoded;
-
         next();
     } catch(error){
         return res.status(401).json({ error: "Token inválido o expirado."});

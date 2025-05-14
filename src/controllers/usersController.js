@@ -33,7 +33,7 @@ export const getUserById = async (req,res) => {
 }
 
 export const createUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     try {
         //verificamos si el usuario existe:
         const existingUser = await User.findOne({where:{email}});
@@ -49,6 +49,7 @@ export const createUser = async (req, res) => {
             username:name,
             email,
             password_hash: hashedPassword, //guardamos al contraseña ya hasheada
+            role
         })
         res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {
@@ -105,7 +106,7 @@ export const loginUser = async (req,res) => {
 
         //Generamos un token JWT:
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role },
             SECRET_KEY,
             { expiresIn: "1h"} // configuramos la expiracion del token 
         )

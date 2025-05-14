@@ -16,6 +16,14 @@ const User = (sequelize, DataTypes) => {
         password_hash: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        role: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "user",//asignamos valor por defecto de usuario a cada registro
+            validate:{
+                isIn:[["admin","user"]]//para solo permitir valores de admin y user
+            }
         }
     }, {
         timestamps: false,
