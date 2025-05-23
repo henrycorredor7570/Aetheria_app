@@ -6,9 +6,9 @@ import { roleMiddleware } from "./../middlewares/roleMiddleware.js";
 
 usersRouter.get("", authMiddleware, roleMiddleware("admin"), getAllUsers);
 usersRouter.get("/:id", authMiddleware, getUserById);
-usersRouter.post("", createUser);
+usersRouter.post("/register", createUser);
 usersRouter.put("/:id", authMiddleware, updateUser);
-usersRouter.delete("/:id", deleteUser);
+usersRouter.delete("/:id", authMiddleware, deleteUser);
 usersRouter.post("/login", loginUser);
 
-export default usersRouter; 
+export default usersRouter;
