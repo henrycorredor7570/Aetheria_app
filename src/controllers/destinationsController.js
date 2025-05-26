@@ -4,7 +4,6 @@ export const getDestinations = async (req, res) => {
     try {
         const destinations = await Destination.findAll();
         res.status(200).json(destinations);
-        
     } catch (error) {
         res.status(500).json({error:error.message});
     }
