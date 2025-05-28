@@ -6,8 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test":"jest"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -25,8 +24,7 @@
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
-    "supertest": "^7.1.1"
+    "vitest": "^3.1.4"
   }
 }
