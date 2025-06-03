@@ -24,6 +24,15 @@ const User = (sequelize, DataTypes) => {
             validate:{
                 isIn:[["admin","user"]]//para solo permitir valores de admin y user
             }
+        },
+        is_verified: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue:false
+        },
+        verification_token: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         timestamps: false,

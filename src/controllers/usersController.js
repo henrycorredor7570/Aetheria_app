@@ -1,6 +1,8 @@
 import { User } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import {sendVerificationEmail} from "../services/emailService";
 
 const SECRET_KEY = process.env.JWT_SECRET; //clave secreta para firmar los tokens
 
@@ -44,13 +46,23 @@ export const createUser = async (req, res) => {
         //hasheamos la contraseña:
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        //Generamos el token de verificacion:
+        const verificationToken = crypto.randomBytes(32).toString("hex");
+
         //creamos el usuario en la db:
         const newUser = await User.create({
             username:name,
             email,
             password_hash: hashedPassword, //guardamos al contraseña ya hasheada
-            role
+            role,
+            is_verified: false,
+            verification_token: verificationToken
         })
+
+        //llamamos en servicio para enviar el email:
+        const verificationUrl = `http://localhost:3000/users/verify/${verificationToken}`;
+        await sendVerificationEmail(email,name, verificationUrl);
+        
         res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {
         console.log(error)
