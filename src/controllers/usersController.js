@@ -2,7 +2,7 @@ import { User } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import {sendVerificationEmail} from "../services/emailService";
+import {sendVerificationEmail} from "../services/emailService.js";
 
 const SECRET_KEY = process.env.JWT_SECRET; //clave secreta para firmar los tokens
 
@@ -61,12 +61,29 @@ export const createUser = async (req, res) => {
 
         //llamamos en servicio para enviar el email:
         const verificationUrl = `http://localhost:3000/users/verify/${verificationToken}`;
+        
         await sendVerificationEmail(email,name, verificationUrl);
         
         res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {
         console.log(error)
         res.status(500).json({error:error.message});
+    }
+}
+
+export const verifyEmail = async (req,res) => {
+    const { token } = req.params;
+    try {
+        const user = await User.findOne({ where: {verification_token: token }});
+        if (!user) return res.status(400).json({error: "Token inválido o expirado"});
+
+        user.is_verified = true;
+        user.verification_token = null;
+        await user.save();
+
+        res.status(200).json({message: "Correo verificado correctamente. Ya puedes iniciar sesión."});
+    } catch (error) {
+        res.status(500).json({error: error.message});
     }
 }
 
