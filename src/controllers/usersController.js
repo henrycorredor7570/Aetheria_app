@@ -5,6 +5,7 @@ import crypto from "crypto";
 import {sendVerificationEmail} from "../services/emailService.js";
 
 const SECRET_KEY = process.env.JWT_SECRET; //clave secreta para firmar los tokens
+const URL_FRONTEND = process.env.FRONTEND_URL;
 
 export const getAllUsers = async (req,res) => {
     const { name } = req.query;
@@ -81,7 +82,8 @@ export const verifyEmail = async (req,res) => {
         user.verification_token = null;
         await user.save();
 
-        res.status(200).json({message: "Correo verificado correctamente. Ya puedes iniciar sesión."});
+        //redirige a mi pagina de verificacion en el frontend
+        return res.redirect(`${URL_FRONTEND}/verified`);
     } catch (error) {
         res.status(500).json({error: error.message});
     }
