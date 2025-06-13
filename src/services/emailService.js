@@ -18,7 +18,7 @@ export const sendVerificationEmail = async (email, name, verificationUrl) => {
         html: `
             <div style="font-family: Arial, sans-serif; color: #222;">
                 <h2>¡Bienvenida/o a Aetheria, ${name}!</h2>
-                <p>Gracias por registrarte. Para activar tu cuenta, por favor haz clic en el siguiente botón:</p>
+                <p>Gracias por registrarte. Para activar tu cuenta, por favor haz clic en el siguiente enlace:</p>
                 <a href="${verificationUrl}"
                     style="display:inline-block; padding:12px 24px, background:#4f46e5; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold; margin:16px 0;">
                     Verificar mi correo
