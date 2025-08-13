@@ -1,4 +1,4 @@
-import { Destination } from "../db.js";
+import { Destination, ARModel} from "../db.js";
 
 export const getDestinations = async (req, res) => {
     try {
@@ -35,7 +35,15 @@ export const getDestinationById = async (req,res) => {
         if(isNaN(id)){
             return res.status(400).json({error:"El ID debe ser un número."});
         }
-        const destination = await Destination.findByPk(id);
+        //Incluimos los modelos AR relacionados al destino:
+        const destination = await Destination.findByPk(id,{
+            include: [
+                {
+                    model:ARModel,
+                    as:"arModels"
+                }
+            ]
+        });
         if(!destination){
             return res.status(404).json({error:"Destino no encontrado"});
         }
