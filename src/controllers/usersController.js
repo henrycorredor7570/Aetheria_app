@@ -2,7 +2,8 @@ import { User } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import {sendVerificationEmail} from "../services/emailService.js";
+import { sendVerificationEmail } from "../services/emailService.js";
+import { isStrongPassword } from "../services/isStrongPassword.js";
 
 const SECRET_KEY = process.env.JWT_SECRET; //clave secreta para firmar los tokens
 const URL_FRONTEND = process.env.FRONTEND_URL;
@@ -36,14 +37,47 @@ export const getUserById = async (req,res) => {
 }
 
 export const createUser = async (req, res) => {
-    const { name, email, password, role } = req.body;
-    try {
-        //verificamos si el usuario existe:
-        const existingUser = await User.findOne({where:{email}});
-        if(existingUser){
-            return res.status(400).json({error:"el usuario ya se encuentra registrado."});
-        }
+    const { 
+        name, 
+        email, 
+        password, 
+        confirm_password, 
+        first_name, 
+        last_name, 
+        birth_date, 
+        gender, 
+        profile_picture,
+        role, 
+        terms
+    } = req.body;
 
+    try {
+        //creamos una validación básica:
+        if(!name || !email || !password || !confirm_password || !first_name || !last_name){
+            return res.status(400).json({ message: 'Faltan campos obligatorios.'});
+        };
+        //confirmamos si las contraseñas son iguales.
+        if(password !== confirm_password){
+            return res.status(400).json({message: 'Las contraseñas no coinciden.'});
+        };
+        //verificar si la contraseña cumple con las condiciones dadas
+        if(!isPasswordValid(password)){
+            return res.status(400).json({message: 'La contraseña es demasiado débil.'});
+        }
+        //validar si se aceptan los terminos y condiciones de la página.
+        if(!terms){
+            return res.status(400).json({message: 'Debes aceptar los términos y condiciones.'});
+        }
+        //verificamos si el nombre de usuario ya existe:
+        const existingUser = await User.findOne({where:{name}});
+        if(existingUser){
+            return res.status(400).json({message:"El nombre de usuario ya está en uso, elige otro nombre de usuario por favor."});
+        }
+        //verificamos si el usuario ya se encuentra registrado con el email:
+        const existingEmail = await User.findOne({where:{email}});
+        if(existingEmail){
+            return res.status(400).json({message: 'El email ya está registrado en la base de datos.'});
+        }
         //hasheamos la contraseña:
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -55,6 +89,11 @@ export const createUser = async (req, res) => {
             username:name,
             email,
             password_hash: hashedPassword, //guardamos al contraseña ya hasheada
+            first_name,
+            last_name,
+            birth_date,
+            gender,
+            profile_picture,
             role,
             is_verified: false,
             verification_token: verificationToken
@@ -63,7 +102,7 @@ export const createUser = async (req, res) => {
         //llamamos en servicio para enviar el email:
         const verificationUrl = `http://localhost:3000/users/verify/${verificationToken}`;
         
-        await sendVerificationEmail(email,name, verificationUrl);
+        await sendVerificationEmail(email, name, verificationUrl);
         
         res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
     } catch (error) {

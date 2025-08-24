@@ -5,14 +5,6 @@ const User = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
-        first_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        last_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         email: {
             type: DataTypes.STRING,
             allowNull: false, 
@@ -20,6 +12,18 @@ const User = (sequelize, DataTypes) => {
             validate: {
                 isEmail: true
             }
+        },
+        password_hash: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        first_name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        last_name: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         birth_date: {
             type: DataTypes.DATEONLY,
@@ -33,10 +37,6 @@ const User = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
             validate: { isUrl: true}
-        },
-        password_hash: {
-            type: DataTypes.STRING,
-            allowNull: false
         },
         role: {
             type: DataTypes.STRING,
