@@ -38,7 +38,7 @@ export const getUserById = async (req,res) => {
 
 export const createUser = async (req, res) => {
     const { 
-        name, 
+        userName, 
         email, 
         password, 
         confirm_password, 
@@ -53,7 +53,7 @@ export const createUser = async (req, res) => {
 
     try {
         //creamos una validación básica:
-        if(!name || !email || !password || !confirm_password || !first_name || !last_name){
+        if(!userName || !email || !password || !confirm_password || !first_name || !last_name){
             return res.status(400).json({ message: 'Faltan campos obligatorios.'});
         };
         //confirmamos si las contraseñas son iguales.
@@ -61,7 +61,7 @@ export const createUser = async (req, res) => {
             return res.status(400).json({message: 'Las contraseñas no coinciden.'});
         };
         //verificar si la contraseña cumple con las condiciones dadas
-        if(!isPasswordValid(password)){
+        if(!isStrongPassword(password)){
             return res.status(400).json({message: 'La contraseña es demasiado débil.'});
         }
         //validar si se aceptan los terminos y condiciones de la página.
@@ -69,7 +69,7 @@ export const createUser = async (req, res) => {
             return res.status(400).json({message: 'Debes aceptar los términos y condiciones.'});
         }
         //verificamos si el nombre de usuario ya existe:
-        const existingUser = await User.findOne({where:{name}});
+        const existingUser = await User.findOne({where:{userName}});
         if(existingUser){
             return res.status(400).json({message:"El nombre de usuario ya está en uso, elige otro nombre de usuario por favor."});
         }
@@ -86,7 +86,7 @@ export const createUser = async (req, res) => {
 
         //creamos el usuario en la db:
         const newUser = await User.create({
-            username:name,
+            username:userName,
             email,
             password_hash: hashedPassword, //guardamos al contraseña ya hasheada
             first_name,
@@ -102,9 +102,9 @@ export const createUser = async (req, res) => {
         //llamamos en servicio para enviar el email:
         const verificationUrl = `http://localhost:3000/users/verify/${verificationToken}`;
         
-        await sendVerificationEmail(email, name, verificationUrl);
+        await sendVerificationEmail(email, userName, verificationUrl);
         
-        res.status(201).json({message:"Usuario registrado exitosamente.", user:newUser});
+        res.status(201).json({message:"Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.", user:newUser});
     } catch (error) {
         console.log(error)
         res.status(500).json({error:error.message});
