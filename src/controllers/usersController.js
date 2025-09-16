@@ -69,7 +69,7 @@ export const createUser = async (req, res) => {
             return res.status(400).json({message: 'Debes aceptar los términos y condiciones.'});
         }
         //verificamos si el nombre de usuario ya existe:
-        const existingUser = await User.findOne({where:{userName}});
+        const existingUser = await User.findOne({where:{username: userName}});
         if(existingUser){
             return res.status(400).json({message:"El nombre de usuario ya está en uso, elige otro nombre de usuario por favor."});
         }
@@ -86,7 +86,7 @@ export const createUser = async (req, res) => {
 
         //creamos el usuario en la db:
         const newUser = await User.create({
-            username:userName,
+            username: userName,
             email,
             password_hash: hashedPassword, //guardamos al contraseña ya hasheada
             first_name,
