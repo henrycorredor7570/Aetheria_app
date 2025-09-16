@@ -36,7 +36,9 @@ const User = (sequelize, DataTypes) => {
         profile_picture:{
             type: DataTypes.STRING,
             allowNull: true,
-            validate: { isUrl: true}
+            validate:{
+                isUrl:true
+            }
         },
         role: {
             type: DataTypes.STRING,
