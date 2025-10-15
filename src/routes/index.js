@@ -5,6 +5,7 @@ import reviewsRouter from "./reviewsRouter.js";
 import visitsRouter from "./visitsRouter.js";
 import pointsOfInterestRouter from "./pointsOfInterest.js";
 import ARRouter from "./ARRouter.js";
+import authRouter from "./authRouter.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/reviews", reviewsRouter);
 router.use("/visits", visitsRouter);
 router.use("/pointsofinterest", pointsOfInterestRouter);
 router.use("/augmentedreality", ARRouter);
+router.use("/auth", authRouter);
 
 export default router;

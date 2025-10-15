@@ -56,6 +56,10 @@ const User = (sequelize, DataTypes) => {
         verification_token: {
             type: DataTypes.STRING,
             allowNull: true
+        }, 
+        google_id: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         timestamps: false,

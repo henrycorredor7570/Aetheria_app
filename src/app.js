@@ -3,6 +3,9 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import routes from './routes/index.js';
+import session from 'express-session';
+import passport from './services/googleAuthService.js';
+import authRouter from './routes/authRouter.js';
 
 import "./db.js";
 
@@ -30,6 +33,14 @@ app.options("", (req, res) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     res.sendStatus(204);
 });
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "aetheria_secret",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", routes);
 
