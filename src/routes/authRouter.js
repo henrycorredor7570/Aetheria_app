@@ -11,7 +11,7 @@ authRouter.get("/google", passport.authenticate("google", {scope: ["profile", "e
 authRouter.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "/login"}),
     (req,res) => {
         //para generar un token que el frontend consumirá.
-        const token = jwt.sing(
+        const token = jwt.sign(
             { id: req.user.id, email: req.user.email, role: req.user.role },
             process.env.JWT_SECRET,
             { expiresIn: "1h"}

@@ -6,9 +6,21 @@ import { fileURLToPath, pathToFileURL } from "url";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;  
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DATABASE_URL, DB_SSL } = process.env; 
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, { logging: false, native: false });
+const connectionString = DATABASE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
+
+const sequelizeOptions = {
+  logging: false,
+  native: false,
+  pool: {max:5, min:0, idle: 1000},
+};
+
+if (DB_SSL === "true" || (connectionString && connectionString.includes("sslmode=require"))){
+  sequelizeOptions.dialectOptions = {ssl: {require:true, rejectUnauthorized: false}};
+};
+
+const sequelize = new Sequelize(connectionString, sequelizeOptions);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
