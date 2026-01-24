@@ -17,7 +17,7 @@ authRouter.get("/google/callback", passport.authenticate("google", { session: fa
             { expiresIn: "1h"}
         );
 
-        //redirige al frontedn con el token (se puede usar query params o localStorage)
+        //redirige al frontend con el token (se puede usar query params o localStorage)
         res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
     }
 );
