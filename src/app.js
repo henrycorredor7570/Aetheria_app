@@ -42,6 +42,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// 👉 Ruta raíz para comprobar que el backend está vivo
+app.get("/", (req, res) => {
+  res.send("🚀 Aetheria Backend corriendo correctamente");
+});
+
 app.use("/", routes);
 
 app.use((err, req, res, next) => {
