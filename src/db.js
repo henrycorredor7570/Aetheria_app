@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "url";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DATABASE_URL, DB_SSL } = process.env; 
+const {DB_USER,DB_PASSWORD,DB_HOST,DB_NAME,DATABASE_URL,DB_SSL} = process.env; 
 
 const connectionString = DATABASE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
 
