@@ -1,8 +1,34 @@
 import { Destination, ARModel} from "../db.js";
-
+import { Op } form "sequelize";
+/**
+ * @desc Obtener destinos con opción de búsqueda
+ * @route GET /destinations?search=nombre
+ * @param {string} search - Término de búsqueda (opcional)
+ * @access Público
+ */
 export const getDestinations = async (req, res) => {
     try {
-        const destinations = await Destination.findAll();
+        // Obtenemos el parámetro 'search' de la query string
+        const {search} = req.query;
+    
+        let destinations;
+
+        if(search && search.trim()){
+            // Si hay un término de búsqueda, filtramos por nombre, descripción o país
+            destinations = await Destination.findAll({
+                where: {
+                    [require('sequelize').Op.or]: [
+                        { name: { [require('sequelize').Op.iLike]: `%${search}%` } },
+                        { description: { [require('sequelize').Op.iLike]: `%${search}%` } },
+                        { country: { [require('sequelize').Op.iLike]: `%${search}%` } }
+                    ]
+                }
+            });
+
+        } else {
+            // Si no hay búsqueda, traemos todos los destinos
+            destinations = await Destination.findAll();
+        }
         res.status(200).json(destinations);
     } catch (error) {
         res.status(500).json({error:error.message});
