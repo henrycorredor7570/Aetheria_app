@@ -1,11 +1,12 @@
 import { Router } from "express";
+import upload from "../middlewares/s3Middleware.js";
 import  { getDestinations, createDestination, getDestinationById, updateDestination, deleteDestination }  from "../controllers/destinationsController.js";
 const destinationsRouter = Router();
 
 destinationsRouter.get("", getDestinations);
-destinationsRouter.post("", createDestination);
+destinationsRouter.post("", upload.single("image"), createDestination);
 destinationsRouter.get("/:id", getDestinationById);
 destinationsRouter.put("/:id", updateDestination);
-destinationsRouter.delete("/:id", deleteDestination)
+destinationsRouter.delete("/:id", deleteDestination);
  
 export default destinationsRouter;

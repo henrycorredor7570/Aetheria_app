@@ -1,5 +1,7 @@
 import { Destination, ARModel} from "../db.js";
-import { Op } form "sequelize";
+import { Op } from "sequelize";
+
+
 /**
  * @desc Obtener destinos con opción de búsqueda
  * @route GET /destinations?search=nombre
@@ -36,11 +38,14 @@ export const getDestinations = async (req, res) => {
 }
 
 export const createDestination = async (req,res) => {
-    const { name, description, latitude, longitude, country, image_url } = req.body;
+    const { name, description, latitude, longitude, country } = req.body;
     try {
         if(!name || !description || !latitude || !longitude || !country){
             return res.status(400).json({error:"¡Hizo falta algún dato!"})
         }
+
+        const image_url = req.file ? req.file.location : null;
+        
         const destinationCreated = await Destination.create({
             name, 
             description, 
