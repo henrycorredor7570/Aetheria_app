@@ -39,8 +39,6 @@ export const getDestinations = async (req, res) => {
 
 export const createDestination = async (req,res) => {
     const { name, description, latitude, longitude, country } = req.body;
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
     try {
         console.log(name, description, latitude, longitude, country)
         if(!name || !description || !latitude || !longitude || !country){
